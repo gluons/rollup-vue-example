@@ -28,5 +28,6 @@ export default {
 <style scoped>
 .hello {
 	color: red;
+	font-feature-settings: 'liga' 1;
 }
 </style>

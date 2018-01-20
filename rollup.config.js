@@ -8,23 +8,24 @@ import serve from 'rollup-plugin-serve';
 import vue from 'rollup-plugin-vue';
 
 const LIBRARY_NAME = 'VueHelloRollup';
+const FILE_NAME = 'vue-hello-rollup';
 
 const sourcemap = true;
 const plugins = [
 	vue({
-		css: 'dist/vue-hello-rollup.css'
+		css: `dist/${FILE_NAME}.css`,
+		postcss: {
+			plugins: require('./postcss.config')().plugins
+		}
 	}),
 	resolve({
-		module: false,
-		browser: true,
-		customResolveOptions: {
-
-		}
+		browser: true
 	}),
 	commonjs(),
 	babel({
 		exclude: 'node_modules/**'
-	})
+	}),
+	postcss()
 ];
 const pluginsWithMinify = plugins.slice(0);
 
@@ -34,7 +35,6 @@ const defaultConfig = {
 
 if (process.env.NODE_ENV === 'production') {
 	pluginsWithMinify.push(minify());
-	pluginsWithMinify.push(postcss());
 }
 
 if (process.env.NODE_ENV === 'development') {
@@ -54,12 +54,12 @@ export default [
 	Object.assign({}, defaultConfig, {
 		output: [
 			{
-				file: 'dist/vue-hello-rollup.common.js',
+				file: `dist/${FILE_NAME}.common.js`,
 				format: 'cjs',
 				sourcemap
 			},
 			{
-				file: 'dist/vue-hello-rollup.es.js',
+				file: `dist/${FILE_NAME}.es.js`,
 				format: 'es',
 				sourcemap
 			}
@@ -68,7 +68,7 @@ export default [
 	}),
 	Object.assign({}, defaultConfig, {
 		output: {
-			file: 'dist/vue-hello-rollup.js',
+			file: `dist/${FILE_NAME}.js`,
 			format: 'iife',
 			name: LIBRARY_NAME,
 			sourcemap
@@ -77,7 +77,7 @@ export default [
 	}),
 	Object.assign({}, defaultConfig, {
 		output: {
-			file: 'dist/vue-hello-rollup.min.js',
+			file: `dist/${FILE_NAME}.min.js`,
 			format: 'iife',
 			name: LIBRARY_NAME,
 			sourcemap
