@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "An example of bundling Vue library with Rollup.",
   "private": true,
-  "main": "index.js",
+  "main": "dist/vue-hello-rollup.common.js",
+  "module": "dist/vue-hello-rollup.es.js",
+  "browser": "dist/vue-hello-rollup.js",
   "scripts": {
     "prebuild": "del-cli dist/**",
     "build": "cross-env NODE_ENV=production rollup -c",
